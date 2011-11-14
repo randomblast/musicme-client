@@ -1,0 +1,786 @@
+/**
+ * MusicMe Look.
+ * @description The main stylesheet for the MusicMe Look.
+ */
+
+
+/* Base Window Environment */
+
+body{
+	background: #f9f9f9;
+	font-family: 'Lucida Grande', Lucida, Helvetica, Arial;
+	font-size: 62.5%;
+	color: #333;
+}
+
+*{
+	margin: 0;
+	padding: 0;
+	outline: 0;
+	border: none;
+}
+
+body > *{
+	width: 900px;
+	margin: auto;
+	/* User-select nonesense. */
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+}
+
+/* Standard dialogue button style. */
+button.dialogue{
+	position: absolute;
+	bottom: 1em;
+	right: 1em;
+	background: #eee;
+	color: #333;
+	border: 1px solid #aaa;
+	box-shadow: 0 0 3px #ddd;
+	font-size: 1.4em;
+	padding: 5px 8px;
+}
+
+button.dialogue:hover{
+	background: -webkit-linear-gradient(#eee,#ddd);
+	border: 1px solid #999;
+}
+
+button.dialogue:active{
+	border: 1px solid #eee;
+	color: #999;
+	background: #eee;
+}
+
+/* Elements using background. */
+#prev,#next,#play_pause,#mute,#unmute,#reload_collection,#clear_playlist,#collection_settings button#show_hide,#settings{
+	background: url("images/controls.svg") no-repeat;
+	background-size: auto 32px; /* Default to 32px height. */
+}
+
+/**
+ * Header - (TrackInfo, Logo and Controls.)
+ */
+
+/* Logo. */
+header{
+	text-align: center;
+	overflow: hidden;
+	height: 145px;
+}
+
+header > #track_info{
+	width: 100%;
+	margin: auto;
+}
+
+header > #track_info > #logo,header > #track_info > div,#overlay{
+	-webkit-transition: opacity 0.2s linear;
+	-moz-transition: opacity 0.2s linear;
+}
+
+header > #track_info > #logo{
+	display: block;
+	margin: auto;
+	background: url("images/logo.png") no-repeat bottom;
+	background-size: auto 32px;
+	width: 170px;
+	height: 57px;
+	opacity: 1;
+}
+
+header > #track_info > div{
+	opacity: 0;
+	display: block;
+	margin-top: -50px;
+	text-align: center;
+	font-size: 1.4em;
+	text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+	overflow: visible;
+	padding-top: 10px;
+}
+
+header > #track_info.playing > #logo{opacity: 0}
+
+header > #track_info.playing > div{opacity: 1}
+
+/* Controls. */
+
+header > #controls{
+	height: 75px;
+	overflow: hidden;
+	width: 100%;
+}
+
+header #controls > section > ol > li{
+	display: inline-block;
+	vertical-align: middle;
+}
+
+header > #controls > section:nth-child(odd){
+	width: 200px;
+	height: 100%;
+}
+
+header > #controls > section:nth-child(1){float: left}
+
+header > #controls > section:nth-child(3){
+	float: right;
+	margin-top: -75px;
+}
+
+header > #controls > section:nth-child(2){
+	width: 500px;
+	height: 100%;
+	margin: auto;
+}
+
+header > #controls > section:nth-child(2) span{
+	cursor: default;
+}
+
+/* Previous, Play/Pause and Next Buttons. */
+
+header > #controls #prev, header > #controls #next{
+	height: 32px;
+	width: 32px;
+}
+
+header > #controls #prev:hover{background-position: -32px 0}
+
+header > #controls #next{background-position: -64px 0}
+
+header > #controls #next:hover{background-position: -96px 0}
+
+header > #controls #play_pause{
+	background-size: auto 56px;
+	height: 56px;
+	width: 56px;
+}
+
+header > #controls #play_pause.play{background-position: -224px 0}
+
+header > #controls #play_pause.play:hover{background-position: -280px 0}
+
+header > #controls #play_pause.pause{background-position: -336px 0}
+
+header > #controls #play_pause.pause:hover{background-position: -392px 0}
+
+/** Range Bars **/
+
+header #controls section input,header section input::-webkit-slider-thumb{-webkit-appearance:none}
+
+/* Track Bar. */
+
+header section input#track::-webkit-slider-thumb{
+	height: 20px;
+	width: 20px;
+	border-radius: 16px;
+	background: #333;
+}
+
+header #controls section input#track{
+	height: 20px;
+	background: transparent;
+	border: 2px solid #333;
+	border-radius: 22px;
+	padding: 2px;
+}
+
+header section:nth-last-of-type(2) > ol > li {margin: 0 5px}
+
+header section:nth-last-of-type(2) > ol > li:nth-child(2) {width: 65%}
+header section:nth-last-of-type(2) input {width: 100%}
+
+/* Volume Bar. */
+
+header #controls section input#volume{
+	height: 2px;
+	background: #666;
+	border-radius: 2px;
+	padding: 2px;
+}
+
+header section input#volume::-webkit-slider-thumb{
+	height: 18px;
+	width: 18px;
+	border-radius: 18px;
+	background: -webkit-radial-gradient(50% 50% , 50% 100%, #333, #000);
+	border: 1px solid #999;
+}
+
+header #controls section:first-child{
+	position: relative;
+	top: 9.5px;
+}
+
+header #controls section:nth-of-type(n+2) ol{position: relative}
+
+header #controls section:nth-of-type(2) ol{top: 22.5px}
+
+header #controls section:nth-of-type(3) ol{top: 29.5px}
+
+header section span{
+	font-weight: bold;
+	font-family: helvetica;
+	font-size: 1.2em;
+	padding: 0 0.5em;
+}
+
+/* Volume Buttons. */
+header section button#mute, header section button#unmute{
+	height: 12px;
+	width: 12px;
+	background-size: auto 12px;
+}
+
+header section button#mute{background-position: -108px 0}
+
+header section button#unmute{background-position: -96px 0}
+
+/**
+ * Collection & Playlist.
+ */
+ 
+article{
+	margin-top: 5px;
+}
+
+article > section{
+	height: 555px;
+	background: #fff;
+	border: 1px solid #ddd;
+	border-radius: 2px;
+}
+
+#collection{
+	width: 270px;
+	float: left;
+	overflow: visible;
+}
+
+#collection,#playlist .info{
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+article > section#playlist div.controls{
+	height: 27px;
+}
+
+/* Collection */
+
+article > section#collection div.controls{
+	margin: 5px;
+	height: 27px;
+}
+
+article > section#collection input#search{
+	background: transparent;
+	color: #000;
+	font-size: 1.3em;
+	vertical-align: middle;
+	padding: 4px;
+	width: 84%;
+	border: 1px solid #ddd;
+	float: left;
+}
+
+article > section#collection > ol.toplevel{
+	height: 497px;
+	overflow: auto;
+}
+
+article > section#collection ol.toplevel,article > section#collection ol.toplevel ol{background: #fff}
+
+article > section#collection > ol li{
+	line-height: 2em;
+	font-size: 12px;
+	list-style-image: url("images/list-arrow.svg");
+	margin-left: 25px;
+	margin-right: 5px;
+	white-space: nowrap;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	cursor: default;
+}
+
+article > section#collection > ol li.noresults{
+	list-style-image: url("images/error_cross.svg");
+	font-weight: bold;
+}
+
+article > section#collection ol.tracks > li{list-style: decimal}
+
+/* Expanded Lists. */
+
+article > section#collection > ol li > ol{display: none}
+
+article > section#collection > ol li.expanded{list-style-image: url("images/list-arrow-expanded.svg")}
+
+article > section#collection > ol li.expanded > ol{display: block}
+
+
+/* Zebra Stripes. */
+
+ol.toplevel li:nth-child(even) {background: #f9f9f9}
+
+/* Collection Info. */
+
+article > section .info{
+	height: 20px;
+	background: -webkit-linear-gradient(bottom, #ddd, #fff);
+	border-top: 1px solid #ddd;
+}
+
+article > section .info p{
+	font-size: 1.2em;
+	font-weight: 100;
+	color: #333;
+	line-height: 25px;
+	vertical-align: middle;
+	margin-left: 5px;
+}
+
+/** Playlist **/
+
+#playlist{
+	width: 600px;
+	float: right;
+	overflow: hidden;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+#playlist.dragover{border: 1px solid #4277ef}
+
+#playlist .container{
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+
+#playlist .container ol,#playlist .container li{
+	list-style: none;
+}
+
+#playlist .container ol{
+	overflow: hidden;
+}
+
+#playlist .container li > ol > li{
+	float: left;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	cursor: default;
+}
+
+#playlist .container .legend{
+	position: absolute;
+	top: 0;
+	width: 100%;
+	font-weight: bold;
+	background: #fff;
+	border-bottom: 1px solid #f9f9f9;
+}
+
+#playlist .container .playlist_items{
+	height: 100%;
+	overflow: auto;
+	padding-top: 2.7em;
+}
+
+#playlist  ol.playlist_items > li:nth-child(even){
+	background: #f9f9f9;
+}
+
+#playlist  ol.playlist_items > li:last-child{margin-bottom: 2.7em}
+
+#playlist .container > li > ol, #playlist .container .playlist_items > li > ol{
+	font-size: 1.1em;
+	line-height: 2.3em;
+}
+
+#playlist li > ol > li{
+	margin-left: 1%;
+	margin-right: 1%;
+}
+
+#playlist .Title,#playlist .Artist,#playlist .Album{width: 27%}
+
+#playlist .Length{width: 6%}
+
+#playlist .Index{width: 3%}
+
+#playlist .playing{-webkit-animation: pulsate 2s ease-in-out infinite;}
+
+@-webkit-keyframes 'pulsate' {
+	0%{
+		background: #4277e8;
+		color: #fff;
+	}
+	50%{
+		background: #2e68e6;
+		color: #fff;
+	}
+	100%{
+		background: #4277e8;
+		color: #fff;
+	}
+}
+
+#playlist ol.playlist_items > li.dragover{border-top: 2px dashed #ddd}
+#playlist ol.playlist_items > li > ol.selected_playlist_item{background: #d1def9}
+
+/** Modal Overlay. **/
+
+#overlay{
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: rgba(0,0,0,0.7);
+	z-index: 0;
+	opacity: 0;
+	-webkit-user-select: text;
+}
+
+#overlay.visible{
+	opacity: 1;
+}
+
+#modal{
+	color: #444;
+	font-family: Lucida, 'Lucida Sans', Helvetica, Arial;
+	position: relative;
+	margin: auto;
+	margin-top: -100%;
+	-webkit-transition: margin 0.4s linear;
+	-moz-transition: margin 0.4s linear; /* In case FF support is added at some point. */
+	width: 70%;
+	height: 60%;
+	background: #fff;
+	border: 1px solid rgba(0, 0, 0, 0.7);
+	box-shadow: 0 0 4em rgba(0,0,0,0.5);
+	overflow: hidden;
+	border-radius: 2px;
+}
+
+#modal.error{
+	background: #fff url("images/error.png") no-repeat center;
+	background-size: auto 80%;
+}
+
+#modal.visible{margin-top: 15%}
+
+#modal > h1{
+	text-align: center;
+	font-weight: 100;
+	font-family: Lucida, Helvetica, Arial;
+	font-size: 3em;
+	line-height: 2em;
+	color: #333;
+}
+
+#modal > p{
+	margin: 1em 2em;
+	font-size: 1.6em;
+}
+
+#modal p > a{
+	color: #c13333;
+	text-decoration: none;
+}
+
+#modal p > a:hover{
+	color: #e41010;
+}
+
+#modal.usenav ol.Navigation{
+	height: 100%;
+	width: 25%;
+	float: left;
+}
+
+#modal.usenav.settings ol.Navigation{
+	background: #dee5ee url("images/controls.svg") top no-repeat;
+	background-size: auto 90%;
+	background-position: 100% -200%;
+}
+
+#modal.usenav ol.Navigation li.Title,#modal.usenav div.views div.active h1{
+	color: #333;
+	font-size: 2.5em;
+	line-height: 1em;
+	margin: 0;
+	padding: 0.4em;
+
+}
+
+#modal.usenav ol.Navigation li{
+	display: block;
+	font-size: 1.5em;
+	line-height: 2em;
+	padding: 0 1em;
+	margin: 0.5em 0;
+	cursor: pointer;
+	-webkit-user-select: none;
+	border-top: 1px solid transparent;
+	border-bottom: 1px solid transparent;
+}
+
+#modal.usenav ol.Navigation li.Title{
+	cursor: default;
+}
+
+#modal.usenav ol.Navigation li.active{
+	background: rgba(142,181,228,0.8);
+	color: #255b9c;
+	border-top: 1px solid #7895b8;
+	border-bottom: 1px solid #7895b8;
+	cursor: default;
+}
+
+#modal.usenav div.views{
+	float: left;
+	width: 74%;
+	height: 100%;
+	box-shadow: -5px 0 1em rgba(0,0,0,0.08);
+	border-left: 1px solid rgba(0,0,0,0.3);
+}
+
+#modal.usenav div.views > div{display: none}
+
+#modal.usenav div.views > div.active{
+	display: block;
+	height: 100%;
+	width: 100%;
+	padding: 1em;
+}
+
+#modal.usenav div.views div.active h1{
+	font-weight: 100;
+	padding: 0;
+	padding-bottom: 0.4em;
+	margin-bottom: 0.4em;
+	border-bottom: 1px solid #eee;
+}
+
+#modal.usenav div.views div.active p{
+	font-size: 1.5em;
+	padding-right: 1.5em;
+}
+
+/** Context Menu **/
+
+.contextmenu{
+	display: block;
+	z-index: 100;
+	position: absolute;
+	width: auto;
+	background: #fff;
+	background: rgba(255,255,255,0.95);
+	border-radius: 5px;
+	border-top: 1px solid #eee;
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #aaa;
+	padding: 5px 0;
+	box-shadow: 1px 2px 5px rgba(0,0,0,0.1);
+}
+
+.contextmenu li{
+	padding: 2px 12px;
+	font-size: 1.2em;
+	font-weight: 200;
+	list-style: none;
+	-webkit-user-select: none;
+	cursor: default;
+	white-space: nowrap;
+}
+
+.contextmenu li:hover{
+	background: -webkit-linear-gradient(#4277e8,#1546ad);
+	color: #eee;
+}
+
+#collection_settings .contextmenu{top: 25px}
+
+/** Eye Candy **/
+
+#collection,#playlist{box-shadow: 2px 1px 10px rgba(0,0,0,0.1)}
+#collection:hover,#playlist:hover{border: 1px solid #ddf}
+
+/** Buttons **/
+#clear_playlist{
+	height: 28px;
+	width: 32px;
+	background-size: auto 32px;
+	background-position: -352px;
+	margin: 2.5px;
+}
+
+#settings{
+	height: 28px;
+	width: 32px;
+	background-size: auto 30px;
+	background-position: -360px;
+	margin: 2.5px;
+	float: right;
+}
+
+/** Collection Settings. **/
+
+#collection_settings{
+	list-style: none;
+	margin-right: 5px;
+}
+
+#collection_settings > li{
+	display: block;
+	float: right;
+}
+
+#collection_settings button#show_hide{
+	height: 22px;
+	width: 22px;
+	background-size: auto 22px;
+	background-position: -220px;
+	margin: 2.5px;
+	float: right;
+}
+
+#collection_settings ol#menu{display: none}
+
+#collection_settings ol#menu.visible{display: block}
+
+/**
+ * Scale
+ * @description Scaleable Interface for MediaQuery-supporting browsers. (If unsupported, defaults to static.)
+ * @author Luke Channings
+ */
+
+@media screen
+{
+	
+	html,body{
+		height: 100%;
+	}
+	
+	body > *{width: 95%}
+	
+	#collection{
+		width: 25%;
+		min-width: 270px;
+	}
+	
+	#playlist{width: 70%}
+	
+	header > #controls > section:nth-child(2n+1){width: 25%}
+	
+	header section:nth-last-of-type(2) > ol > li:nth-child(2){width: 75%}
+	
+	header > #controls > section:nth-child(2){width: 50%}
+	
+	article{height: 70%}
+	
+	article > section{
+		height: 100%;
+		position: relative;
+		padding-top: 3.5em;
+		padding-bottom: 2.3em;
+	}
+	
+	article > section > .info, article > section > .controls{
+		position: absolute;
+		width: 100%;
+	}
+	
+	article > section > .info{bottom: 0}
+	
+	article > section > .controls{top: 0}
+	
+	article > section#collection > ol.toplevel{
+		height: 100%;
+	}
+	
+	*{-webkit-transition: width,height 0.2s linear}
+	
+}
+
+@media screen and ( min-width: 1090px )
+{
+	#collection{
+		width: 28%;
+		max-width: 320px;
+	}
+}
+
+@media screen and ( max-width: 1070px )
+{
+	header section:nth-last-of-type(2) > ol > li:nth-child(2){width: 70%}
+}
+
+@media screen and ( max-width: 960px )
+{
+	
+	#playlist{
+		width: 65%;
+	}
+	
+	header section:nth-last-of-type(2) > ol > li:nth-child(2){width: 65%}
+	
+	header > #controls > section:nth-child(2n+1){width: 20%}
+
+	header > #controls > section:nth-child(2){width: 60%}
+	
+	
+	#controls > section:nth-child(3) > ol{
+		width: 100%;
+	}
+	
+	#controls > section:nth-child(3) li:nth-of-type(2n+1){
+		width: 12px;
+	}
+	
+	#controls > section:nth-child(3) li:nth-of-type(2){width: 68%;margin: 0 5px}
+	#controls > section:nth-child(3) li:nth-of-type(2) > input{width: 100%}
+	
+}
+
+@media screen and ( min-width: 1310px )
+{
+	
+	#playlist{
+		width: 73%;
+	}
+	
+}
+
+@media screen and ( max-height: 725px ){article{height: 67%}}
+
+@media screen and ( max-height: 670px ){article{height: 62%}}
+
+@media screen and ( max-height: 580px )
+{
+	header{
+		height: 100px;
+	}
+	
+	article{
+		min-height: 330px;
+		height: 65%;
+	}
+}
+
+/**
+ * START TABBED UI.
+ */
+@media screen and ( max-width: 750px )
+{
+	#collection{display: none}
+}

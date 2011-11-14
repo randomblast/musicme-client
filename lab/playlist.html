@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Playlist Layout.</title>
+		<style>
+			body{
+				background: #f9f9f9;
+				font-family: Helvetica, Arial;
+				font-size: 62.5%;
+				color: #333;
+			}
+			*{
+				margin: 0;
+				padding: 0;
+				outline: 0;
+				border: none;
+			}
+			
+			#playlist {
+				background: #fff;
+				width: 700px;
+				height: 200px;
+				margin: 20px auto;
+				border: 1px solid #ddd;
+				position: relative;
+				padding-top: 2.5em;
+			}
+			
+			#playlist  ol{
+				overflow: hidden;
+				width: 100%;
+			}
+			
+			#playlist  ol.playlist_items{
+				height: 100%;
+				overflow: auto;
+			}
+			
+			#playlist  ol.playlist_items > li{border-top: 2px solid #fff}
+			
+			#playlist  ol.playlist_items > li:nth-child(even){
+				background: #f9f9f9;
+				border-top: 2px solid #f9f9f9
+			}
+		
+			#playlist ol.playlist_items > li.dragover{border-top: 2px dashed #ddd}
+			#playlist  ol.playlist_items > li > ol.selected{background: #d1def9}
+			
+			#playlist  .playing{-webkit-animation: pulsate 2s ease-in-out infinite;}
+			
+			@-webkit-keyframes 'pulsate' {
+				0%{
+					background: #4277e8;
+					color: #fff;
+				}
+				50%{
+					background: #2e68e6;
+					color: #fff;
+				}
+				100%{
+					background: #4277e8;
+					color: #fff;
+				}
+			}
+			
+			#playlist  li{
+				list-style: none;
+				font-size: 1.1em;
+				line-height: 2em;
+				-webkit-user-select: none;
+				cursor: default;
+			}
+			
+			#playlist  ol > li{
+				display: block;
+				float: left;
+				list-style: none;
+				white-space: nowrap;
+				overflow: hidden;
+			}
+			
+			#playlist  ol > li > ol > li,#playlist > li.legend > ol > li{padding-left: 1%}
+			
+			#playlist  .legend{
+				position: absolute;
+				top: 0;
+				width: 100%;
+				border-bottom: 1px solid #f9f9f9;
+			}
+			
+			#playlist  .legend li{font-weight: bold}
+			
+			#playlist  > ol > li{width: 100%}
+			
+			#playlist  .Title,.Artist,.Album{width: 28%}
+			
+			#playlist  .Length{width: 7%}
+			
+			#playlist  .Index{width: 3%}
+			
+		</style>
+	</head>
+	<body>
+		<section id="playlist">
+			<li class="legend">
+				<ol>
+					<li class="Index">#</li>
+					<li class="Title">Title</li>
+					<li class="Artist">Artist</li>
+					<li class="Album">Album</li>
+					<li class="Length">Length</li>
+				</ol>
+			</li>
+			<ol class="playlist_items">
+				
+			</ol>
+		</section>
+		<script type="text/javascript">
+
+// Define the Queue Items.
+var Queue = [
+	{ID: 23, Title: "Selfmachine", Artist: "I Blame Coco", Album: "The Constant", Length: "3:49"},
+	{ID: 24, Title: "In Spirit Golden", Artist: "I Blame Coco", Album: "The Constant", Length: "3:28"},
+	{ID: 25, Title: "Quicker", Artist: "I Blame Coco", Album: "The Constant", Length: "3:02"},
+	{ID: 26, Title: "Turn Your Back on Love", Artist: "I Blame Coco", Album: "The Constant", Length: "3:23"},
+	{ID: 27, Title: "Please Rewind", Artist: "I Blame Coco", Album: "The Constant", Length: "3:22"},
+	{ID: 28, Title: "Summer Rain", Artist: "I Blame Coco", Album: "The Constant", Length: "3:52"},
+	{ID: 29, Title: "Playwright Fate", Artist: "I Blame Coco", Album: "The Constant", Length: "3:10"}
+];
+
+document.querySelector(".legend .Title").addEventListener("click",function(){
+	
+	Queue.sort(function(a,b){
+		
+		if ( a.Title < b.Title ) return -1;
+		else if ( a.Title > b.Title ) return 1;
+		else return 0;
+		
+	});
+	
+	populate_playlist();
+	
+},false);
+
+var Settings = {drag_and_drop: true};
+
+var Interface = {};
+
+/**
+ * _GetPositionFromTop
+ * @description Determine an element's position from the top of the screen.
+ */
+function _GetPositionFromTop()
+{
+	
+}
+
+function refresh_playlist_indexes()
+{
+	var playlist = document.querySelector(".playlist_items");
+	
+	// Gonna be awful when there are loads of elements. Must find a better way of doing this.
+	for ( var i = 0; i < playlist.children.length; i++ )
+	{
+		playlist.children[i].getElementsByTagName("li")[0].innerHTML = i;
+	}
+}
+
+// Swap Queue array elements to reflect playlist changes.
+function swap_playlist_queue(a,b)
+{
+	if ( a !== undefined && b !== undefined )
+	{
+		var tmp = Queue[a];
+		
+		Queue[a] = Queue[b];
+		Queue[b] = tmp;
+		
+		tmp = null;
+	}
+}
+
+function populate_playlist()
+{
+	// Get the playlist.
+	var playlist_items = document.querySelector(".playlist_items");
+	
+	// Clear the playlist.
+	playlist_items.innerHTML = null;
+	
+	// Loop through Queue items.
+	for ( var i = 0; i < Queue.length; i++ )
+	{
+		
+		// Create a track row.
+		var track_row = document.createElement("li");
+		
+		track_row.addEventListener("click",function(e){
+			
+			// If there is no Ctrl key being pressed...
+			if ( ! e.ctrlKey && ! e.shiftKey )
+			{
+				// Get all selected elements.
+				var selected = document.querySelectorAll("#playlist .selected");
+				
+				// Loop through selected elements.
+				for ( var i = 0; i < selected.length; i++ )
+				{
+					// Remove selected class.
+					selected[i].classList.remove("selected");
+				}
+				
+			}
+			
+			// If we're doing multiple select.
+			if ( e.shiftKey )
+			{
+				// Determine the element from which we are selecting elements.
+				var from = document.querySelector(".selected").parentNode;
+				
+				// Determine the direction of the loop.
+				var direction = ( _get_element_index(from) > _get_element_index(this) ) ? "up" : "down";
+				
+				// Make sure there was already an element selected, or this won't work.
+				if ( from instanceof HTMLElement )
+				{
+					// If the direction of the loop is downward...
+					if ( direction == "down" )
+					{
+						// Loop until the next sibling is the target.
+						while ( from !== this)
+						{
+							// Increment the form to the next sibling.
+							from = from.nextSibling;
+							
+							// Set the row selected.
+							from.firstChild.classList.add("selected");
+						}
+					}
+					
+					// If the direction of the loop is upward.
+					else if ( direction == "up" )
+					{
+						// Loop until the previous sibling is the target.
+						while ( from !== this )
+						{	
+							// Decrement the form to the previous sibling.
+							from = from.previousSibling;
+							
+							// Set the row selected.
+							from.firstChild.classList.add("selected");
+						}
+					}
+				}
+			}
+			
+			var target = ( e.target ) ? e.target : e.srcElement;
+			
+			target.parentNode.classList.add("selected");
+			
+		},false);
+		
+		track_row.addEventListener("dblclick",function(e){
+
+			var target = ( e.target ) ? e.target : e.srcElement;
+			
+			var playing = document.querySelector(".playing");
+			
+			if ( playing ) playing.classList.remove("playing");
+			
+			if ( target.parentNode.classList.contains("selected") )
+			{
+				target.parentNode.classList.remove("selected")
+			}
+			
+			target.parentNode.classList.add("playing");
+			
+		},false);
+		
+		// Check for DnD support.
+		if ( Settings.drag_and_drop )
+		{
+			track_row.setAttribute("draggable","true");
+			
+			track_row.addEventListener("dragstart",function(e){
+				
+				// Enable dragging.
+				e.dataTransfer.effectAllowed = 'move';
+				
+				var index = this.getElementsByTagName("li")[0].innerHTML;
+				
+				// Set the index of the moved element at the drop data.
+				e.dataTransfer.setData("Text",index);
+				
+			},false);
+			
+			track_row.addEventListener("dragover",function(e){
+				
+				// Stop browser from doing its default. (Which will break this.)
+				e.preventDefault();
+				
+				// Add the dragover style to the element.
+				this.classList.add("dragover");
+				
+				// Enable move drop on this element.
+				e.dataTransfer.dropEffect = "move";
+				
+			},false);
+			
+			track_row.addEventListener("dragleave",function(e){
+				
+				// When cursor is not over the drop point, remove the dragover style.
+				this.classList.remove("dragover");
+				
+			},false);
+			
+			track_row.addEventListener("drop",function(e){
+				
+				// Prevent browser from screwing up.
+				if (e.stopPropagation) e.stopPropagation();
+				
+				// Get the source element
+				var SourceElement = this.parentNode.children[parseInt(e.dataTransfer.getData("Text"))];
+				
+				// Move the source element before the target element on drop.
+				this.parentNode.insertBefore(SourceElement,this);
+				
+				// Remove dragover class.
+				this.classList.remove("dragover");
+				
+				return false; // Otherwise breaks.
+				
+			},false);
+		}
+		
+		// Create the track column container.
+		var track_column_container = document.createElement("ol");
+		
+		// Loop through track columns.
+		for ( var j in Queue[i] )
+		{
+			// Create a track column.
+			var column = document.createElement("li");
+			
+			if ( j == "ID" )
+			{
+				
+				column.innerHTML = i;
+				
+				column.className = "Index";
+				
+			} else {
+	
+				// Set the text for the column.
+				column.innerHTML = Queue[i][j];
+				
+				// Set the class of the column.
+				column.className = j;
+			
+			}
+			
+			// Append the column to the column container.
+			track_column_container.appendChild(column);
+			
+		}
+		
+		// Append the track column container to the track row.
+		track_row.appendChild(track_column_container);
+		
+		// Append the track to the playlist.
+		playlist_items.appendChild(track_row);
+		
+	}
+}
+
+populate_playlist();
+		</script>
+	</body>
+</html>

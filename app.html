@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>MusicMe</title>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="style.css" type="text/css" />
+		<script src="musicme.js" type="text/javascript"></script>
+		<link rel="icon" href="images/icon-16.png" type="image/png" />
+		<script type="text/javascript">
+// Load MusicMe when DOM is ready.
+document.addEventListener("DOMContentLoaded",function(){
+	
+	var ThemeElements = {
+		"Collection" : document.querySelector("#collection .toplevel"),
+		"Playlist" : document.querySelector("#playlist .playlist_items"),
+		"Buttons" : {
+			"PlayPause" : document.getElementById("play_pause"),
+			"Prev" : document.getElementById("prev"),
+			"Next" : document.getElementById("next"),
+			"Clear" : document.getElementById("clear_playlist"),
+			"Mute" : document.getElementById("mute"),
+			"Unmute" : document.getElementById("unmute"),
+			"Settings" : document.querySelector("#settings")
+		},
+		"Ranges" : {
+			"Track" : document.getElementById("track"),
+			"Volume" : document.getElementById("volume")
+		},
+		"PlayingInfo" : {
+			"Title" : document.getElementById("title"),
+			"Artist" : document.getElementById("artist"),
+			"Album" : document.getElementById("album"),
+			"CurrentTime" : document.getElementById("current_time"),
+			"RemainingTime" : document.getElementById("remaining_time")
+		},
+		"ContentInfo" : {
+			"Collection" : document.getElementById("collection_info"),
+			"Playlist" : document.getElementById("playlist_info")
+		},
+		"TrackInfo" : document.getElementById("track_info"),
+		"SearchBar" : document.getElementById("search"),
+		"ModalOverlay" : document.getElementById("overlay"),
+		"CollectionSettings" : {
+			"Toggle" : document.querySelector("#collection_settings button#show_hide"),
+			"ContextMenu" : {
+				"Element" : document.querySelector("#collection_settings ol.contextmenu"),
+				"Items" : document.querySelectorAll("#collection_settings ol.contextmenu > li")
+			}
+		}
+	};
+	
+	var Settings = {
+		Server: "http://sophia/~Luke/MusicMe/musicme-api/musicme.php",
+		Debug: true
+	};
+
+	// init.
+	MM = new MusicMe(ThemeElements,Settings);
+
+},false);
+
+		</script>
+	</head>
+	<body>
+		<div id="overlay"></div>
+		<header>
+			<div id="track_info">
+				<h1 id="logo"><!-- MusicMe Logo. --></h1>
+				<div>
+					<p id="title">&nbsp;</p>
+					<p id="artist">&nbsp;</p>
+					<p id="album">&nbsp;</p>
+				</div>
+			</div>
+			<div id="controls">
+				<section>
+					<ol>
+					<!-- #1: Prev, Play/Pause, Next -->
+						<li><button id="prev"></button></li>
+						<li><button id="play_pause" class="play"></button></li>
+						<li><button id="next"></button></li>
+					</ol>
+				</section>
+				<section>
+					<!-- #2: Current Time, Seekbar, Remaining Time -->
+					<ol>
+						<li><span id="current_time">00:00</span></li>
+						<li><input type="range" id="track" value="0" min="0" max="100" step="0.1" /></li>
+						<li><span id="remaining_time">-00:00</span></li>
+					</ol>
+				</section>
+				<section>
+					<!-- #3: Mute Volume, Volumebar, Maximum volume -->
+					<ol>
+						<li><button id="mute"></button></li>
+						<li><input type="range" id="volume" min="0.01" max="1" step="0.001" /></li>
+						<li><button id="unmute"></button></li>
+					</ol>
+				</section>
+			</div>
+		</header>
+		<article>
+			<section id="collection">
+				<div class="controls">
+					<input id="search" type="text" name="search" placeholder="Search The Collection" autocomplete="off" />
+					<ol id="collection_settings">
+						<li>
+							<button id="show_hide"><!-- Show/Hide collection_settings_menu --></button>
+						</li>
+						<li>
+							<ol id="menu" class="contextmenu">
+								<li>Genre > Artist > Album > Track</li>
+								<li>Artist > Album > Track</li>
+								<li>Album > Track</li>
+							</ol>
+						</li>
+					</ol>
+				</div>
+				<ol class="toplevel" data-level="0"><!-- Items go here. --></ol>
+				<div class="info">
+					<p id="collection_info"><!-- Top Level Name --></p>
+				</div>
+			</section>
+			<section id="playlist">
+				<div class="controls">
+					<div id="buttons">
+						<button id="clear_playlist" title="Clear the Playlist."></button>
+						<button id="settings" title="MusicMe Settings."></button>
+					</div>
+				</div>
+				<div class="container">
+					<li class="legend">
+						<ol>
+							<li class="Index">#</li>
+							<li class="Title">Title</li>
+							<li class="Artist">Artist</li>
+							<li class="Album">Album</li>
+							<li class="Length">Length</li>
+						</ol>
+					</li>
+					<ol class="playlist_items">
+						
+					</ol>
+				</div>
+				<ol class="info">
+					<p id="playlist_info">0 Tracks. ( 0 Seconds. )</p>
+				</ol>
+			</section>
+		</article>
+	</body>
+</html>

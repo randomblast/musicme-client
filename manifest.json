@@ -1,0 +1,14 @@
+{
+  "name": "MusicMe",
+  "description": "Your Music. Anywhere.",
+  "version": "0.2",
+  "app": {
+    "launch": {
+      "local_path": "app.html"
+    }
+  },
+  "icons": {
+    "16": "images/icon-16.png",
+    "128": "images/icon-128.png"
+  }
+}
