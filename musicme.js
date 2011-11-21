@@ -19,7 +19,7 @@ function MusicMe(Elements,SettingsOverride)
 		"SortBy" : ["artist","album","track"], // Sort collection setting.
 		"UseDragAndDrop" : true, // Drag-and-Drop support.
 		"UseKeyboardShortcuts" : true, // Bindings for keyboard shortcuts.
-		"DefaultVolume" : 0.5, // Default volume at 50% of maximum.
+		"DefaultVolume" : 1, // Default volume at 50% of maximum.
 		"Server" : "http://127.0.0.1/", // Domain or IP of the MusicMe Server.
 		"PlayingInfoType" : "Remaining",
 		"Debug" : false // Debugging bool.
